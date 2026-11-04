@@ -1,0 +1,205 @@
+@import 'tailwindcss';
+
+/*
+ * Monochrome, following the system appearance. Color appears only in small status dots,
+ * using Apple's system colors (light and dark variants).
+ */
+@theme inline {
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-fg-3: var(--fg-3);
+  --color-fill: var(--fill);
+  --color-fill-2: var(--fill-2);
+  --color-line: var(--line);
+  --color-inverse: var(--inverse);
+  --color-ok: var(--ok);
+  --color-bad: var(--bad);
+  --color-warn: var(--warn);
+}
+
+:root {
+  color-scheme: light dark;
+  --bg: #ffffff;
+  --fg: #000000;
+  --fg-2: #6e6e73;
+  --fg-3: #aeaeb2;
+  --fill: rgb(0 0 0 / 0.035);
+  --fill-2: rgb(0 0 0 / 0.07);
+  --line: rgb(0 0 0 / 0.09);
+  --inverse: #ffffff;
+  --ok: #34c759;
+  --bad: #ff3b30;
+  --warn: #ff9500;
+  --glow: rgb(0 0 0 / 0.05);
+  /* Behind a first-visit tip's spotlight. */
+  --dim: rgb(0 0 0 / 0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000000;
+    --fg: #ffffff;
+    --fg-2: #98989d;
+    --fg-3: #636366;
+    --fill: rgb(255 255 255 / 0.05);
+    --fill-2: rgb(255 255 255 / 0.1);
+    --line: rgb(255 255 255 / 0.11);
+    --inverse: #000000;
+    --ok: #30d158;
+    --bad: #ff453a;
+    --warn: #ff9f0a;
+    --glow: rgb(255 255 255 / 0.07);
+    --dim: rgb(0 0 0 / 0.6);
+  }
+}
+
+html,
+body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  overscroll-behavior: none;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+a,
+input,
+textarea {
+  touch-action: manipulation;
+}
+
+/* Safe areas for notched iPhones (viewport-fit=cover). */
+.pt-safe {
+  padding-top: max(env(safe-area-inset-top), 0.75rem);
+}
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom), 0.75rem);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-enter {
+  animation: enter 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes sheet {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+.animate-sheet {
+  animation: sheet 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.animate-fade {
+  animation: fade 0.3s ease-out both;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.animate-breathe {
+  animation: breathe 1.6s ease-in-out infinite;
+}
+
+/* Skeletons keep the exact footprint of what is loading, so nothing moves when it arrives. */
+@keyframes shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+/* In the components layer so rounded-* utilities can reshape it. */
+@layer components {
+  .skeleton {
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--fill) 30%, var(--fill-2) 50%, var(--fill) 70%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s linear infinite;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  70% {
+    transform: scale(1.06);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-pop {
+  animation: pop 0.38s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+/* New rows slide into fixed slots: transform only, never layout. */
+@keyframes slot {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-slot {
+  animation: slot 0.3s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-enter,
+  .animate-sheet,
+  .animate-fade,
+  .animate-breathe,
+  .animate-pop,
+  .animate-slot,
+  .skeleton {
+    animation: none;
+  }
+}

@@ -1,0 +1,13 @@
+// Local dev / E2E config: no Workers AI binding (it needs a Cloudflare login),
+// so the intake pipeline runs on the mock models (DEMO_AI=mock).
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "uzbl-portal-demo-dev",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "kv_namespaces": [{ "binding": "DEMO_KV", "id": "local-dev" }],
+  "ratelimits": [{ "name": "INTAKE_LIMITER", "namespace_id": "1001", "simple": { "limit": 30, "period": 60 } }],
+  "vars": { "DEMO_AI": "mock" }
+}
